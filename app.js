@@ -1,22 +1,10 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const sequelize = require("./database/db");
 
 const groupsRouter = require("./routes/api/groups");
 const todoesRouter = require("./routes/api/todoes");
 const usersRouter = require("./routes/api/users");
-
-const connectToPostgres = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
-
-connectToPostgres();
 
 const app = express();
 
