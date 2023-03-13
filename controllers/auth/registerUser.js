@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
   const payload = {
-    id: user._id,
+    id: newUser._id,
   };
 
   const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
@@ -29,6 +29,8 @@ const registerUser = async (req, res) => {
   const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
     expiresIn: "7d",
   });
+
+  await User.findByIdAndUpdate(newUser._id, { accessToken, refreshToken });
 
   res.status(201).json({
     user: {
