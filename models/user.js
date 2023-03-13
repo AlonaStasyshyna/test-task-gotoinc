@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const Joi = require("joi");
 
 const { handleMongooseError } = require("../helpers");
 
@@ -6,7 +7,8 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: [true, "Set user's name for user"],
+      unique: [true, "Name in use"],
+      required: [true, "Set name for user"],
     },
     password: {
       type: String,
@@ -19,6 +21,14 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
+const authSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().min(6).required(),
+});
+
 const User = model("user", userSchema);
 
-module.exports = User;
+module.exports = {
+  User,
+  authSchema,
+};
