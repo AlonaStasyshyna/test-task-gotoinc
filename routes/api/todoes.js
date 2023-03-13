@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { validateBody } = require("../../middlewares");
+const { authenticate, validateBody } = require("../../middlewares");
 const { schemas } = require("../../models/todo");
 const {
   addTodo,
@@ -12,10 +12,15 @@ const {
 
 const router = express.Router();
 
-router.get("/", getUserTodoes);
-router.get("/:id", getTodoById);
-router.post("/", validateBody(schemas.addTodoSchema), addTodo);
-router.patch("/:id", validateBody(schemas.updateTodoSchema), updateTodo);
-router.delete("/:id", deleteTodo);
+router.get("/", authenticate, getUserTodoes);
+router.get("/:id", authenticate, getTodoById);
+router.post("/", authenticate, validateBody(schemas.addTodoSchema), addTodo);
+router.patch(
+  "/:id",
+  authenticate,
+  validateBody(schemas.updateTodoSchema),
+  updateTodo
+);
+router.delete("/:id", authenticate, deleteTodo);
 
 module.exports = router;

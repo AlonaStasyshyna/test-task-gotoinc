@@ -15,6 +15,12 @@ const userSchema = new Schema(
       minlength: 6,
       required: [true, "Set password for user"],
     },
+    accessToken: {
+      type: String,
+    },
+    refreshToken: {
+      type: String,
+    },
   },
   { versionKey: false }
 );
@@ -26,9 +32,14 @@ const authSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
+
 const User = model("user", userSchema);
 
 module.exports = {
   User,
   authSchema,
+  refreshSchema,
 };

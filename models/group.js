@@ -7,6 +7,7 @@ const groupSchema = new Schema(
   {
     name: {
       type: String,
+      unique: [true, "Name of the group in use"],
       required: [true, "Set name for group"],
     },
     userId: {
