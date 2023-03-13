@@ -1,9 +1,9 @@
 const { Group } = require("../../models/group");
 
 const getUserGroups = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: userId } = req.user;
 
-  const result = await Group.find({ owner }, "-owner");
+  const result = await Group.find({ userId }, "-userId");
 
   res.status(200).json(result);
 };
